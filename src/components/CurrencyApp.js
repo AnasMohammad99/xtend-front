@@ -1,10 +1,14 @@
 import React from 'react'
-import { Button, Table, Tag } from 'antd';
+import { Button, Spin, Table, Tag } from 'antd';
 import { Box } from '@mui/material';
 import styled from '@emotion/styled';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
 
-const CurrencyApp = ({onDeleting, onEditing, budgetData}) => {
+const CurrencyApp = ({onDeleting, onEditing}) => {
+  const { loading, budgetList, error, updateState, response } = useSelector(
+    (state) => state.budgetKey
+  );
 const columns = [
   {
     title: 'Amount',
@@ -15,6 +19,11 @@ const columns = [
     title: 'Date',
     dataIndex: 'date',
     key: 'date',
+    render: (_, { date }) => {
+      return(
+            <p>{new Date(date).toLocaleDateString()}</p>
+      )
+    },
   },
   {
     title: 'Category',
@@ -22,7 +31,7 @@ const columns = [
     dataIndex: 'category',
     render: (_, { category }) => {
       return(
-            category==="expenses"?
+            category==="EXPENSES"?
               <Tag color="volcano" key={category}>{category}</Tag>:
               <Tag color="green" key={category}>{category}</Tag>
       )
@@ -45,7 +54,7 @@ const columns = [
         </>
       )
     }
-  },
+  }, 
 ];
 const Wrapper = styled(Box)({
   backgroundColor: 'white',
@@ -64,7 +73,9 @@ const Wrapper = styled(Box)({
 });
   return (
     <Wrapper>
-        <Table columns={columns} dataSource={budgetData} pagination={{defaultPageSize:10}} />        
+        {
+          budgetList.length?<Table columns={columns} dataSource={budgetList} pagination={{defaultPageSize:10}} /> : <Spin />
+        }       
     </Wrapper>
   )
 }

@@ -8,7 +8,7 @@ export const AppRoute = {
   weather: `/weather`,
   currency:`/currency`
 };
-const AppRoutes = ({onDeleting, onEditing, budgetData}) => {
+const AppRoutes = ({onDeleting, onEditing}) => {
 
   return (
 
@@ -21,7 +21,7 @@ const AppRoutes = ({onDeleting, onEditing, budgetData}) => {
       <Route
         path={AppRoute.currency}
         exact
-        element={<CurrencyApp onDeleting={onDeleting} onEditing={onEditing} budgetData={budgetData} />}
+        element={<CurrencyApp onDeleting={onDeleting} onEditing={onEditing} />}
       />
       <Route
         path="*"

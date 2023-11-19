@@ -1,16 +1,10 @@
 import { BrowserRouter } from 'react-router-dom';
 import Layout from './layout';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBudget } from './features/budget/budgetSlice';
 
 function App() {
-  // eslint-disable-next-line no-unused-vars
-  useEffect(() => {
-    try {
-
-    } catch (error) {
-      console.log(error.message);
-    }
-  },[])
   return (
     <BrowserRouter>
     <div className="App">

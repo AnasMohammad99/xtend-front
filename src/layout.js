@@ -5,6 +5,8 @@ import AppRoutes from './routes';
 import { Avatar, Box, Typography } from '@mui/material';
 import { PlusOutlined } from '@ant-design/icons';
 import BudgetForm from './components/BudgetForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchBudget, removeRecord } from './features/budget/budgetSlice';
 
 const { Header, Sider, Content } = Layout;
 const headerStyle = {
@@ -33,15 +35,15 @@ const siderStyle = {
 
 const AppLayout = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [budgetData, setBudgetData] = useState(JSON.parse(localStorage.getItem('items'))||[])
+  const [budgetKey, setBudgetKey] = useState("")
   const [amount, setAmount] = useState("")
   const [category, setCategory] = useState("")
   const [date, setDate] = useState("")
   const [description, setDescription] = useState("")
-  const [budegetKey, setBudegetKey] = useState("")
+  const dispatch = useDispatch();
   useEffect(() => {
-    localStorage.setItem('items', JSON.stringify(budgetData));
-  }, [budgetData]);
+      dispatch(fetchBudget())
+  },[dispatch])
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -53,15 +55,14 @@ const AppLayout = () => {
   };
   const onEditing = (record) => {
     setIsModalOpen(true);
+    setBudgetKey(record.key)
     setAmount(record.amount);
     setDate(record.date);
     setDescription(record.description);
     setCategory(record.category);
-    setBudegetKey(record.key)
   }
   const onDeleting = (record) => {
-    let newBudgetData = budgetData.filter((e)=>e.key!==record.key)
-    setBudgetData(newBudgetData)
+    dispatch(removeRecord(record.key))
   }
   return(
   <Space
@@ -99,12 +100,12 @@ const AppLayout = () => {
       </Header>
       <Layout hasSider>
         <Sider theme="dark" style={siderStyle}><AppSidebar /></Sider>
-        <Content style={contentStyle}><AppRoutes onDeleting={onDeleting} onEditing={onEditing} budgetData={budgetData} /></Content>
+        <Content style={contentStyle}><AppRoutes onDeleting={onDeleting} onEditing={onEditing} /></Content>
       </Layout>
         <FloatButton icon={<PlusOutlined />} onClick={showModal} />
     </Layout>
         <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <BudgetForm handleCancel={handleCancel} budegetKey={budegetKey} setBudegetKey={setBudegetKey} setBudgetData={setBudgetData} budgetData={budgetData} amount={amount} category={category} date={date} description={description} setAmount={setAmount} setCategory={setCategory} setDate={setDate} setDescription={setDescription} />
+        <BudgetForm handleCancel={handleCancel} amount={amount} category={category} date={date} description={description} setAmount={setAmount} setCategory={setCategory} setDate={setDate} setDescription={setDescription} budgetKey={budgetKey} setBudgetKey={setBudgetKey} />
       </Modal>
   </Space>
   )

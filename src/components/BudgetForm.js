@@ -1,22 +1,36 @@
 import React from 'react';
-import { Button, message, Space } from 'antd';
+import { Button, DatePicker, message, Space } from 'antd';
 import {  MenuItem, Select, Stack, TextField } from '@mui/material';
-const BudgetForm = ({setBudgetData, budgetData, amount, category, date, description, setAmount, setCategory, setDate, setDescription, budegetKey, setBudegetKey, handleCancel}) => {
+import { addRecord, updateRecord } from '../features/budget/budgetSlice';
+import { useDispatch, useSelector } from 'react-redux';
+const BudgetForm = ({amount, category, date, description, budgetKey, setAmount, setCategory, setDate, setDescription, setBudgetKey, handleCancel}) => {
+  const dispatch = useDispatch();
   const onFinish = (e) => {
     e.preventDefault()
-    if(budegetKey===""){
-      setBudgetData([...budgetData,{key:`${new Date().getTime()}`,amount, category, date, description}])
-      message.success('Submit success!');
-    } else {
-      let newData = [...budgetData.filter((e)=>e.key !== budegetKey),{key:budegetKey,amount, category, date, description}]
-      setBudgetData(newData.sort((a,b)=>+a.key - +b.key))
-      console.log(budgetData);
-    }
+      if(budgetKey===""){
+        dispatch(
+          addRecord({
+                  amount:amount,
+                  category:category.toUpperCase(),
+                  date:date,
+                  description:description,
+          })
+        )
+        message.success('Submit success!');
+      } else {
+        dispatch(updateRecord({
+                key:budgetKey,
+                amount:amount,
+                category:category.toUpperCase(),
+                date:date,
+                description:description,
+        }))
+      }
     setAmount("")
     setCategory("")
     setDate("")
     setDescription("")
-    setBudegetKey("")
+    setBudgetKey("")
     handleCancel()
   };
   return (
@@ -56,8 +70,8 @@ const BudgetForm = ({setBudgetData, budgetData, amount, category, date, descript
             label="Category"
             onChange={(e)=>setCategory(e.target.value)}
         >
-            <MenuItem value="incomes">Incomes</MenuItem>
-            <MenuItem value="expenses">Expenses</MenuItem>
+            <MenuItem value="INCOMES">Incomes</MenuItem>
+            <MenuItem value="EXPENSES">Expenses</MenuItem>
         </Select>
         </Stack>
         <Stack spacing={2} direction="row">
