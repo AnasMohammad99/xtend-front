@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 
-const CurrencyApp = ({onDeleting, onEditing}) => {
+const BusgetApp = ({onDeleting, onEditing}) => {
   const { loading, budgetList, error, updateState, response } = useSelector(
     (state) => state.budgetKey
   );
@@ -80,4 +80,4 @@ const Wrapper = styled(Box)({
   )
 }
 
-export default CurrencyApp
+export default BusgetApp

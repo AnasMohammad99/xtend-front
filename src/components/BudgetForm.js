@@ -7,6 +7,9 @@ const BudgetForm = ({amount, category, date, description, budgetKey, setAmount, 
   const dispatch = useDispatch();
   const onFinish = (e) => {
     e.preventDefault()
+    if(+amount<0){
+      message.error('amount must be positive');
+    } else {
       if(budgetKey===""){
         dispatch(
           addRecord({
@@ -32,6 +35,7 @@ const BudgetForm = ({amount, category, date, description, budgetKey, setAmount, 
     setDescription("")
     setBudgetKey("")
     handleCancel()
+    }
   };
   return (
     <form onSubmit={onFinish}>

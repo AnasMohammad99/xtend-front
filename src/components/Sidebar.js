@@ -17,7 +17,7 @@ function getItem(label, key, icon, children, type) {
 }
 const items = [
   getItem(<Link to={AppRoute.dashboard}>Dashboard</Link>, 'dashboard', <PieChartOutlined />),
-  getItem(<Link to={AppRoute.currency}>currency</Link>, 'currency', <ContainerOutlined />),
+  getItem(<Link to={AppRoute.budget}>budget</Link>, 'budget', <ContainerOutlined />),
 ];
 const AppSidebar = () => {
   const location = useLocation()
